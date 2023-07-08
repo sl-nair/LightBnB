@@ -72,7 +72,7 @@ const addUser = function(user) {
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function(guest_id, limit = 10) {
-  return pool.query(`SELECT properties.* 
+  return pool.query(`SELECT properties.*, avg(property_reviews.rating) as average_rating
   FROM properties 
   JOIN reservations ON properties.id = property_id 
   JOIN property_reviews ON properties.id = property_reviews.property_id
@@ -162,7 +162,7 @@ const addProperty = function(property) {
     property.description,
     property.thumbnail_photo_url,
     property.cover_photo_url,
-    property.cost_per_night,
+    property.cost_per_night*100.0,
     property.parking_spaces,
     property.number_of_bathrooms,
     property.number_of_bedrooms,
